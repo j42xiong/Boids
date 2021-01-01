@@ -8,6 +8,7 @@ function setup(){
 function draw(){
     background(51);
     for (let boid of flock){
+        boid.align(flock);
         boid.show();
         boid.update();
     }
