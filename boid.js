@@ -2,14 +2,14 @@ class Boid {
     constructor(){
         this.position = createVector(random(width), random(height));
         this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(2, 5));
+        this.velocity.setMag(random(2, 4));
         this.acceleration = createVector();
-
+        this.radians = 0;
     }    
 
     align(boids){
         let desired = createVector();
-        let radius = 80;
+        let radius = 50;
         let total= 0;
         for(let boid of boids){
             let d = dist(this.position.x, this.position.y, boid.position.x,boid.position.y);
@@ -32,10 +32,37 @@ class Boid {
     update(){
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
+        if(this.position.x > width){
+            this.position.x = 0;
+        }
+        if(this.position.y > height){
+            this.position.y = 0;
+        }
+        if(this.position.x < 0){
+            this.position.x = width;
+        }
+        if(this.position.y < 0){
+            this.position.y = height;
+        }
+    }
+    detection(){
+        fill(255, 255, 255, 20);
+        stroke(0, 0, 0, 0);
+        circle(this.position.x, this.position.y, 100);
     }
     show(){
-        strokeWeight(8);
-        stroke(255, 204, 0);
-        point(this.position.x, this.position.y);
+        push();
+        strokeWeight(10);
+        stroke(255, 255, 255);
+        noFill();
+        translate(this.position.x, this.position.y);
+        this.radians = this.velocity.heading();
+        rotate(this.radians);
+        
+
+        triangle(-4, 2, -4, -2, 2, 0);
+        pop();
+        //point(this.position.x, this.position.y);
+        this.detection();
     }
 }
