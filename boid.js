@@ -5,15 +5,22 @@ class Boid {
         this.velocity.setMag(random(2, 4));
         this.acceleration = createVector();
         this.radians = 0;
-        this.maxForce = 0.2;
+        this.maxForce = 0.3;
         this.maxSpeed = 4;
         this.radius = 50;
     }    
 
     flocking(boids){
-        this.align(boids);
-        this.cohesion(boids);
-        this.separation(boids);
+        let a = this.align(boids);
+        let c = this.cohesion(boids);
+        let s = this.separation(boids);
+        
+        s.mult(1.05);
+
+        this.acceleration.add(a);
+        this.acceleration.add(c);
+        this.acceleration.add(s);
+        //this.acceleration.limit(this.maxForce);
     }
     align(boids){
         let desired = createVector();
@@ -32,10 +39,8 @@ class Boid {
             desired.sub(this.velocity);
             desired.limit(this.maxForce);
 
-        }else{
-            desired = 0;
         }
-        this.acceleration.add(desired);
+        return desired;
     }
 
     cohesion(boids){
@@ -57,10 +62,8 @@ class Boid {
             desired.sub(this.velocity);
             desired.limit(this.maxForce);
 
-        }else{
-            desired = 0;
         }
-        this.acceleration.add(desired);
+        return desired;
     }
 
     separation(boids){
@@ -72,7 +75,9 @@ class Boid {
             
             if(boid != this && d < this.radius){
                 let diff = p5.Vector.sub(this.position, boid.position);
-                diff.div(d^2);
+                
+                    diff.div(max(d^2, 10e-18));
+                
                 desired.add(diff);
                 total ++;
             }
@@ -83,10 +88,8 @@ class Boid {
             desired.sub(this.velocity);
             desired.limit(this.maxForce);
 
-        }else{
-            desired = 0;
         }
-        this.acceleration.add(desired);
+        return desired;
     }
     update(){
         this.position.add(this.velocity);
