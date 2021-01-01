@@ -13,6 +13,7 @@ class Boid {
     flocking(boids){
         this.align(boids);
         this.cohesion(boids);
+        this.separation(boids);
     }
     align(boids){
         let desired = createVector();
@@ -62,6 +63,31 @@ class Boid {
         this.acceleration.add(desired);
     }
 
+    separation(boids){
+        let desired = createVector();
+        
+        let total= 0;
+        for(let boid of boids){
+            let d = dist(this.position.x, this.position.y, boid.position.x,boid.position.y);
+            
+            if(boid != this && d < this.radius){
+                let diff = p5.Vector.sub(this.position, boid.position);
+                diff.div(d^2);
+                desired.add(diff);
+                total ++;
+            }
+        }
+        if(total > 0){
+            desired.div(total);
+            desired.setMag(this.maxSpeed);
+            desired.sub(this.velocity);
+            desired.limit(this.maxForce);
+
+        }else{
+            desired = 0;
+        }
+        this.acceleration.add(desired);
+    }
     update(){
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
