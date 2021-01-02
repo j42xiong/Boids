@@ -22,6 +22,7 @@ class Boid {
         a.mult(1.2);
         c.mult(1);
         s.mult(1.3);
+        p.mult(2);
 
         this.acceleration.add(a);
         this.acceleration.add(c);
@@ -134,14 +135,19 @@ class Boid {
         }
     }
     detection(){
-        fill(255, 255, 255, 3);
+        fill(52, 189, 235, 3);
         stroke(0, 0, 0, 0);
-        circle(this.position.x, this.position.y, 2*this.radius);
+        for(let x = 0; x<=2*this.radius; x += this.radius/2){
+            circle(this.position.x, this.position.y, x);
+        }
+        //circle(this.position.x, this.position.y, 2*this.radius);
+        
     }
     show(){
+        
         push();
         strokeWeight(10);
-        stroke(255, 255, 255);
+        stroke(52, 189, 235);
         noFill();
         translate(this.position.x, this.position.y);
         this.radians = this.velocity.heading();
@@ -151,6 +157,6 @@ class Boid {
         triangle(-1, 0.5, -1, -0.5, 0.5, 0);
         pop();
         //point(this.position.x, this.position.y);
-        this.detection();
+        //this.detection();
     }
 }
