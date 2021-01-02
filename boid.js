@@ -1,25 +1,32 @@
 class Boid {
-    constructor(){
-        this.position = createVector(random(width), random(height));
+    constructor(spawned){
+        if(spawned){
+            this.position = createVector(random(width), random(height));
+        }else{
+            this.position = createVector(mouseX, mouseY);
+        }
         this.velocity = p5.Vector.random2D();
         this.velocity.setMag(random(2, 4));
         this.acceleration = createVector();
         this.radians = 0;
         this.maxForce = 0.3;
         this.maxSpeed = 4;
-        this.radius = 50;
+        this.radius = 65;
     }    
 
     flocking(boids){
         let a = this.align(boids);
         let c = this.cohesion(boids);
         let s = this.separation(boids);
-        
-        s.mult(1.05);
+        let p = this.predator();
+        a.mult(1.2);
+        c.mult(1);
+        s.mult(1.3);
 
         this.acceleration.add(a);
         this.acceleration.add(c);
         this.acceleration.add(s);
+        this.acceleration.add(p);
         //this.acceleration.limit(this.maxForce);
     }
     align(boids){
@@ -76,7 +83,7 @@ class Boid {
             if(boid != this && d < this.radius){
                 let diff = p5.Vector.sub(this.position, boid.position);
                 
-                    diff.div(max(d^2, 10e-18));
+                    diff.div(max(d^2, 10e-20));
                 
                 desired.add(diff);
                 total ++;
@@ -91,6 +98,23 @@ class Boid {
         }
         return desired;
     }
+    predator(){
+        let desired = createVector();
+        let d = dist(this.position.x, this.position.y, mouseX, mouseY);
+        
+        if( d < this.radius*5){
+            let diff = p5.Vector.sub(this.position, createVector(mouseX, mouseY));
+            diff.div(max(d^2, 10e-20));
+            desired.add(diff);
+        
+
+        desired.setMag(this.maxSpeed);
+        desired.sub(this.velocity);
+        desired.limit(this.maxForce);
+        }
+        return desired;
+    }
+
     update(){
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
@@ -110,7 +134,7 @@ class Boid {
         }
     }
     detection(){
-        fill(255, 255, 255, 5);
+        fill(255, 255, 255, 3);
         stroke(0, 0, 0, 0);
         circle(this.position.x, this.position.y, 2*this.radius);
     }
@@ -124,7 +148,7 @@ class Boid {
         rotate(this.radians);
         
 
-        triangle(-4, 2, -4, -2, 2, 0);
+        triangle(-1, 0.5, -1, -0.5, 0.5, 0);
         pop();
         //point(this.position.x, this.position.y);
         this.detection();

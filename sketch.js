@@ -1,8 +1,8 @@
 const flock = [];
 
 function setup(){
-    createCanvas(1280, 720);
-    for(let i = 0; i<100; i++) flock.push(new Boid());
+    createCanvas(windowWidth, windowHeight);
+    for(let i = 0; i<80; i++) flock.push(new Boid(true));
     
 }
 function draw(){
@@ -12,4 +12,8 @@ function draw(){
         boid.show();
         boid.update();
     }
+}
+
+function mouseClicked(){
+    flock.push(new Boid(false));
 }
