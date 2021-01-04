@@ -9,9 +9,17 @@ class Boid {
         this.velocity.setMag(random(2, 4));
         this.acceleration = createVector();
         this.radians = 0;
-        this.maxForce = 0.3;
+
+        // boid characteristics
+        this.maxForce = 0.25;
         this.maxSpeed = 4;
         this.radius = 65;
+
+        
+        // visual characteristics
+        this.size = 0.1;
+        this.intrinsicColour = random(150, 255);
+        this.colour = this.intrinsicColour;
     }    
 
     flocking(boids){
@@ -19,16 +27,31 @@ class Boid {
         let c = this.cohesion(boids);
         let s = this.separation(boids);
         let p = this.predator();
+        
         a.mult(1.2);
         c.mult(1);
-        s.mult(1.3);
+        s.mult(1.1);
+        
+        /*
+        a.mult(alignmentSlider.value());
+        c.mult(cohesionSlider.value());
+        s.mult(separationSlider.value());
+        */
         p.mult(2);
-
+        
         this.acceleration.add(a);
         this.acceleration.add(c);
         this.acceleration.add(s);
         this.acceleration.add(p);
-        //this.acceleration.limit(this.maxForce);
+        
+
+        //this.velocity.setMag(this.maxSpeed);
+        //this.velocity.limit(this.maxSpeed);
+        this.acceleration.limit(this.maxForce);
+
+        //Update colour to match flock
+        this.colour = this.updateColour(boids) ;
+        
     }
     align(boids){
         let desired = createVector();
@@ -103,7 +126,7 @@ class Boid {
         let desired = createVector();
         let d = dist(this.position.x, this.position.y, mouseX, mouseY);
         
-        if( d < this.radius*5){
+        if( d < this.radius*3){
             let diff = p5.Vector.sub(this.position, createVector(mouseX, mouseY));
             diff.div(max(d^2, 10e-20));
             desired.add(diff);
@@ -116,6 +139,27 @@ class Boid {
         return desired;
     }
 
+    updateColour(boids){
+        let avgColour = this.intrinsicColour;
+        let total = 1;
+        for(let boid of boids){
+            let d = dist(this.position.x, this.position.y, boid.position.x,boid.position.y);
+            
+            if(boid != this && d < this.radius){
+                avgColour += boid.colour;
+                total ++;
+            }
+        }
+        if(total > 0){
+            avgColour= avgColour/total;
+            
+
+        }else{
+            return this.colour;
+        }
+        return avgColour;
+    }
+    // Update position, account for edges
     update(){
         this.position.add(this.velocity);
         this.velocity.add(this.acceleration);
@@ -147,14 +191,14 @@ class Boid {
         
         push();
         strokeWeight(10);
-        stroke(52, 189, 235);
+        stroke(52, 189, this.colour);
         noFill();
         translate(this.position.x, this.position.y);
         this.radians = this.velocity.heading();
         rotate(this.radians);
         
-
-        triangle(-1, 0.5, -1, -0.5, 0.5, 0);
+        let size = this.size;
+        triangle(-size, size/2, -size, -size/2, size/2, 0);
         pop();
         //point(this.position.x, this.position.y);
         //this.detection();
