@@ -6,13 +6,13 @@ class Boid {
             this.position = createVector(mouseX, mouseY);
         }
         this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(2, 4));
+        this.velocity.setMag(random(3, 5));
         this.acceleration = createVector();
         this.radians = 0;
 
         // boid characteristics
         this.maxForce = 0.25;
-        this.maxSpeed = 4;
+        this.maxSpeed = 5;
         this.radius = 65;
 
         
@@ -26,7 +26,7 @@ class Boid {
         let a = this.align(boids);
         let c = this.cohesion(boids);
         let s = this.separation(boids);
-        let p = this.predator();
+        let p = this.predator(barriers);
         
         a.mult(1.2);
         c.mult(1);
@@ -37,7 +37,7 @@ class Boid {
         c.mult(cohesionSlider.value());
         s.mult(separationSlider.value());
         */
-        p.mult(2);
+        p.mult(2.5);
         
         this.acceleration.add(a);
         this.acceleration.add(c);
@@ -122,19 +122,34 @@ class Boid {
         }
         return desired;
     }
-    predator(){
+    //Avoid the mouse and barriers
+    predator(barriers){
         let desired = createVector();
         let d = dist(this.position.x, this.position.y, mouseX, mouseY);
-        
-        if( d < this.radius*3){
+        let total= 0;
+        if( d < this.radius){
             let diff = p5.Vector.sub(this.position, createVector(mouseX, mouseY));
             diff.div(max(d^2, 10e-20));
             desired.add(diff);
-        
-
-        desired.setMag(this.maxSpeed);
-        desired.sub(this.velocity);
-        desired.limit(this.maxForce);
+            desired.setMag(this.maxSpeed);
+            desired.sub(this.velocity);
+            desired.limit(this.maxForce);
+        }
+        for(let barrier of barriers){
+            let d = dist(this.position.x, this.position.y, barrier.position.x,barrier.position.y);
+            
+            if(d < this.radius){
+                let diff = p5.Vector.sub(this.position, barrier.position);
+                diff.div(max(d^2, 10e-20));
+                desired.add(diff);
+                total ++;
+            }
+        }
+        if(total > 0){
+            desired.div(total);
+            desired.setMag(this.maxSpeed);
+            desired.sub(this.velocity);
+            desired.limit(this.maxForce);
         }
         return desired;
     }
