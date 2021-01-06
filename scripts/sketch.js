@@ -4,8 +4,12 @@ const barriers = [];
 let alignmentSlider, cohesionSlider, separationSlider;
 
 function setup(){
-    createCanvas(windowWidth, windowHeight);
-    
+    var myCanvas = createCanvas(windowWidth, windowHeight);
+    myCanvas.parent('sketch01');
+    button = createButton('reset');
+    button.parent('sketch01');
+    button.position(windowWidth/2, windowHeight-100);
+    // by default this sets position relative to window...
     /*
     alignmentSlider = createSlider(0, 5, 1.2, 0.1);
     cohesionSlider = createSlider(0, 5, 1, 0.1);
