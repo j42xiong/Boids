@@ -2,9 +2,28 @@ body{
     margin: 0;
     overflow: hidden;
 }
+
 .interact{
     display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-family: Arial;
+    font-size: 40px;
     justify-content: center;
-    position: relative;
-    color: red;
+    align-items: center;
+    flex-direction: column;
+    user-select: none;
+    
+    
+}
+
+.textShow{
+    opacity: 100%;
+    transition: all 2s ease;
+}
+.textHide{
+    opacity: 0;
+    transition: all 1s ease-out;
 }

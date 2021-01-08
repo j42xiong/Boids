@@ -1,21 +1,20 @@
 const flock = [];
 const barriers = [];
-
+const particles = [];
+let first = true;
 let alignmentSlider, cohesionSlider, separationSlider;
 
 function setup(){
     var myCanvas = createCanvas(windowWidth, windowHeight);
     myCanvas.parent('sketch01');
-    button = createButton('reset');
-    button.parent('sketch01');
-    button.position(windowWidth/2, windowHeight-100);
+    first = true;
     // by default this sets position relative to window...
     /*
     alignmentSlider = createSlider(0, 5, 1.2, 0.1);
     cohesionSlider = createSlider(0, 5, 1, 0.1);
     separationSlider = createSlider(0, 5, 1.5, 0.1);
     */
-    for(let i = 0; i<60; i++) flock.push(new Boid(true));
+    //for(let i = 0; i<0; i++) flock.push(new Boid(true));
     
 }
 function draw(){
@@ -28,10 +27,25 @@ function draw(){
     for (let barrier of barriers){
         barrier.show();
     }
+    /*
+    for (let [i, particle] of particles.entries()){
+        if(particle.show()){
+            
+        }
+    }
+    */
 }
 
 function mouseClicked(){
-    flock.push(new Boid(false));
+    if(first == true){
+        for(let i = 0; i<40; i++) flock.push(new Boid(false));
+        first = false;
+    }else{
+        flock.push(new Boid(false));
+    }
+    /*
+    particles.push(new particle());
+    */
 }
 
 function keyPressed(){

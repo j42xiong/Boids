@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head class = "bruh">
+    <head>
         <meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible"content ="IE=edge" />
         <meta name="viewport" content="width-device-width, initial-scale=1"/>
-        <title>flocking</title>
+        <title>Boids</title>
         <link rel="stylesheet" href="stylesheets/style.css">
-        
         <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.js"></script>
         <script src="scripts/boid.js"></script>
         <script src="scripts/sketch.js"></script>
         <script src="scripts/barrier.js"></script>
-
+        <script src="scripts/particles.js"></script>
         
-        
-
     </head>
     <body>
-        <div id = "sketch01">
-            
-            
+        <div class = "interact" id = "interact">
+            <div class = "textHide" id = "leftText">Left click to spawn some 
+                <span style="color: #3ee6cf">boids</span>
+            </div>
+            <div class = "textHide" id = "spaceText">Press Space to spawn a barrier</div>
         </div>
+        <div id = "sketch01"></div>
+
+        <script type="text/javascript">
+            window.onload = function(){
+                document.getElementById("spaceText").setAttribute("class", "textShow");
+                document.getElementById("leftText").setAttribute("class", "textShow");
+
+                
+               var refButton = document.getElementById("interact");
+    
+                refButton.onclick = function() {
+                    document.getElementById("leftText").setAttribute("class", "textHide");
+                }
+                window.onkeydown = function(event){
+                        if(event.keyCode === 32) {
+                            
+                            document.getElementById("spaceText").setAttribute("class", "textHide");
+                        }
+                    };
+                };
+        </script>
+        
     </body>
+
 </html>
