@@ -10,5 +10,5 @@ Features
 - Boids avoid the cursor (predator)
 - Barriers can be added by pressing Space
 
-Inspired by Craig Reynolds' [paper](https://www.red3d.com/cwr/boids/) of the same name.  
+Inspired by Craig Reynolds' [boids algorithm](https://www.red3d.com/cwr/boids/).  
 
