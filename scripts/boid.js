@@ -130,7 +130,7 @@ class Boid {
         let desired = createVector();
         let d = dist(this.position.x, this.position.y, mouseX, mouseY);
         let total= 0;
-        if( d < this.radius*1){
+        if( d < this.radius*2.5){
             let diff = p5.Vector.sub(this.position, createVector(mouseX, mouseY));
             diff.div(max(200*d^2, 10e-20));
             desired.add(diff);
