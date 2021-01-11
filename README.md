@@ -1,4 +1,5 @@
 # Boids
 Simulating the flocking behaviour of autonomous agents
 
-![](preview.gif)
+<p align="center"><img src="preview.gif" width="80%"></p>
+
