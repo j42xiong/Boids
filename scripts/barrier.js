@@ -6,8 +6,8 @@ class Barrier{
     show(){
         
         
-        strokeWeight(10);
-        stroke(52, 189, this.colour);
+        strokeWeight(15);
+        stroke(245, 191, 127);
 
         point(this.position.x, this.position.y);
         //this.detection();

@@ -39,6 +39,7 @@ function draw(){
 function mouseClicked(){
     if(first == true){
         for(let i = 0; i<40; i++) flock.push(new Boid(false));
+        
         first = false;
     }else{
         flock.push(new Boid(false));
@@ -52,10 +53,12 @@ function keyPressed(){
     if(key == ' '){
         
         let mindist = Infinity;
+        
         for(let barrier of barriers){
             let d = dist(mouseX, mouseY, barrier.position.x,barrier.position.y);
             mindist = min(mindist, d);
         }
+        
         if(mindist > 10) barriers.push(new Barrier());
         
         

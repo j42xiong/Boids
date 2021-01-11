@@ -6,12 +6,12 @@ class Boid {
             this.position = createVector(mouseX, mouseY);
         }
         this.velocity = p5.Vector.random2D();
-        this.velocity.setMag(random(3, 5));
+        this.velocity.setMag(random(4, 5));
         this.acceleration = createVector();
         this.radians = 0;
 
         // boid characteristics
-        this.maxForce = 0.25;
+        this.maxForce = 0.2;
         this.maxSpeed = 5;
         this.radius = 65;
 
@@ -37,12 +37,15 @@ class Boid {
         c.mult(cohesionSlider.value());
         s.mult(separationSlider.value());
         */
-        p.mult(2.5);
+        p.mult(2);
+        
+
         
         this.acceleration.add(a);
         this.acceleration.add(c);
         this.acceleration.add(s);
         this.acceleration.add(p);
+
         
 
         //this.velocity.setMag(this.maxSpeed);
@@ -127,9 +130,9 @@ class Boid {
         let desired = createVector();
         let d = dist(this.position.x, this.position.y, mouseX, mouseY);
         let total= 0;
-        if( d < this.radius*3){
+        if( d < this.radius*1){
             let diff = p5.Vector.sub(this.position, createVector(mouseX, mouseY));
-            diff.div(max(d^2, 10e-20));
+            diff.div(max(200*d^2, 10e-20));
             desired.add(diff);
             desired.setMag(this.maxSpeed);
             desired.sub(this.velocity);
@@ -138,7 +141,7 @@ class Boid {
         for(let barrier of barriers){
             let d = dist(this.position.x, this.position.y, barrier.position.x,barrier.position.y);
             
-            if(d < this.radius){
+            if(d < this.radius*1.5){
                 let diff = p5.Vector.sub(this.position, barrier.position);
                 diff.div(max(d^2, 10e-20));
                 desired.add(diff);
