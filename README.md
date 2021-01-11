@@ -1,6 +1,5 @@
 # Boids Simulation
-Simulating the flocking behaviour of autonomous agents.
-
+Simulating the flocking behaviour of autonomous agents. Try it [here](http://jason-x.me/Boids/)!
 
 
 <p align="center"><img src="preview.gif" width="90%"></p>
